@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BarberShopModule } from './barber-shop/barber-shop.module';
+import { RatingModule } from './rating/rating.module';
 
 
 @Module({
@@ -19,6 +20,7 @@ import { BarberShopModule } from './barber-shop/barber-shop.module';
       entities: [],
     }),
     BarberShopModule,
+    RatingModule,
   ],
 })
 export class AppModule {}
