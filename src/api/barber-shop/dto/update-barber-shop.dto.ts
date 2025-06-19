@@ -12,7 +12,7 @@ export class UpdateBarberShopDto {
   location: string;
   @ApiProperty({ example: 'img' })
   @IsString()
-  @IsOptional()
+  @IsOptional() 
   image: string;
   @ApiProperty({ example: 'eng yaxshisi bizda' })
   @IsString()
