@@ -4,6 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BarberShopModule } from './barber-shop/barber-shop.module';
 import { RatingModule } from './rating/rating.module';
 
+import { UserModule } from './user/user.module';
+import { BarberModule } from './barber/barber.module';
+import { BookingModule } from './booking/booking.module';
+import { UserEntity } from './user/entities/user.entity';
+import { BookingEntity } from './booking/entities/booking.entity';
+import { BarberShopEntity } from './barber-shop/entities/barber-shop.entity';
 
 @Module({
   imports: [
@@ -17,8 +23,11 @@ import { RatingModule } from './rating/rating.module';
       database: process.env.PG_DB,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [],
+      entities: [UserEntity, BookingEntity,BarberShopEntity],
     }),
+    UserModule,
+    BarberModule,
+    BookingModule,
     BarberShopModule,
     RatingModule,
   ],
