@@ -1,7 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { UserModule } from './user/user.module';
+import { BarberModule } from './barber/barber.module';
+import { BookingModule } from './booking/booking.module';
+import { UserEntity } from './user/entities/user.entity';
+import { BookingEntity } from './booking/entities/booking.entity';
 
 @Module({
   imports: [
@@ -15,8 +19,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.PG_DB,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [],
+      entities: [UserEntity, BookingEntity],
     }),
+    UserModule,
+    BarberModule,
+    BookingModule,
   ],
 })
 export class AppModule {}
