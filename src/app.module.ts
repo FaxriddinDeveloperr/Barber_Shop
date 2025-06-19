@@ -10,6 +10,7 @@ import { BookingModule } from './booking/booking.module';
 import { UserEntity } from './user/entities/user.entity';
 import { BookingEntity } from './booking/entities/booking.entity';
 import { BarberShopEntity } from './barber-shop/entities/barber-shop.entity';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { BarberShopEntity } from './barber-shop/entities/barber-shop.entity';
     BookingModule,
     BarberShopModule,
     RatingModule,
+    ImagesModule,
   ],
 })
 export class AppModule {}
