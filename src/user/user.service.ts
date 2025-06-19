@@ -12,6 +12,8 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ErrorHender } from 'src/utils/catchError';
+import { successRes } from 'src/utils/succesResponse';
 
 @Injectable()
 export class UserService {
@@ -36,10 +38,9 @@ export class UserService {
       };
       const user2 = this.User.create(user);
       await this.User.save(user2);
-      return user2;
+      return successRes(user2, 201);
     } catch (error) {
-      console.log(error.message);
-      return error.message;
+      return ErrorHender(error);
     }
   }
 
@@ -62,7 +63,7 @@ export class UserService {
       });
       return { acsesToken, refreshToken };
     } catch (error) {
-      console.log(error.message);
+      return ErrorHender(error);
     }
   }
 
@@ -74,9 +75,9 @@ export class UserService {
       if (!data.length) {
         throw new NotFoundException('Not fount user');
       }
-      return { statusCode: 200, data: data };
+      return successRes(data)
     } catch (error) {
-      return error.message;
+      return ErrorHender(error);
     }
   }
 
@@ -89,8 +90,10 @@ export class UserService {
       if (!data) {
         throw new NotFoundException('Not fount user');
       }
-      return { statusCode: 200, data };
-    } catch (error) {}
+      return successRes(data)
+    } catch (error) {
+      return ErrorHender(error);
+    }
   }
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
@@ -103,19 +106,23 @@ export class UserService {
         where: { id },
         select: ['full_name', 'email', 'phone_number', 'role', 'id'],
       });
-      return newdata
+      return successRes(newdata);
     } catch (error) {
-      return error.message;
+      return ErrorHender(error);
     }
   }
 
   async delet(id: string) {
-    let data = await this.User.findOneBy({ id });
-    if (!data) {
-      throw new NotFoundException('Not fount user');
+    try {
+      let data = await this.User.findOneBy({ id });
+      if (!data) {
+        throw new NotFoundException('Not fount user');
+      }
+      let delet = await this.User.remove(data);
+      return successRes(delet)
+    } catch (error) {
+      ErrorHender(error);
     }
-    let delet = await this.User.remove(data);
-    return { data: delet };
   }
 
   AcsesToken(pelod: { id: string; email: string }) {

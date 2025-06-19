@@ -6,6 +6,8 @@ import { BarberModule } from './barber/barber.module';
 import { BookingModule } from './booking/booking.module';
 import { UserEntity } from './user/entities/user.entity';
 import { BookingEntity } from './booking/entities/booking.entity';
+import { BarberShopModule } from './barber-shop/barber-shop.module';
+import { BarberShopEntity } from './barber-shop/entities/barber-shop.entity';
 
 @Module({
   imports: [
@@ -19,11 +21,12 @@ import { BookingEntity } from './booking/entities/booking.entity';
       database: process.env.PG_DB,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [UserEntity, BookingEntity],
+      entities: [UserEntity, BookingEntity,BarberShopEntity],
     }),
     UserModule,
     BarberModule,
     BookingModule,
+    BarberShopModule,
   ],
 })
 export class AppModule {}

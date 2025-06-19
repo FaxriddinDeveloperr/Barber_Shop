@@ -4,6 +4,8 @@ import { UpdateBookingDto } from './dto/update-booking.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookingEntity } from './entities/booking.entity';
 import { Repository } from 'typeorm';
+import { ErrorHender } from 'src/utils/catchError';
+import { successRes } from 'src/utils/succesResponse';
 
 @Injectable()
 export class BookingService {
@@ -16,9 +18,9 @@ export class BookingService {
     try {
       const data = this.Booking.create(createBookingDto);
       await this.Booking.save(data);
-      return { data };
+      return successRes(data, 201)
     } catch (error) {
-      return error.message;
+      return ErrorHender(error)
     }
   }
 
@@ -28,9 +30,9 @@ export class BookingService {
       if (!data.length) {
         throw new NotFoundException('Not fount data');
       }
-      return { data };
+      return successRes(data);
     } catch (error) {
-      return error.message;
+      return ErrorHender(error)
     }
   }
 
@@ -40,9 +42,9 @@ export class BookingService {
       if (!data) {
         throw new NotFoundException('Not fount data by id');
       }
-      return { data };
+      return successRes(data)
     } catch (error) {
-      return error.message;
+      return ErrorHender(error)
     }
   }
 
@@ -54,9 +56,9 @@ export class BookingService {
       }
       await this.Booking.update(id, updateBookingDto);
       const newdata = await this.Booking.findOne({ where: { id } });
-      return {newdata}
+      return successRes(newdata)
     } catch (error) {
-      return error.message;
+      return ErrorHender(error)
     }
   }
 
@@ -67,9 +69,9 @@ export class BookingService {
         throw new NotFoundException('Not fount data by id');
       }
       const delet = await this.Booking.remove(data)
-      return {delet} 
+      return successRes(delet)
     } catch (error) {
-      return error.message
+      return ErrorHender(error)
     }
   }
 }
