@@ -1,22 +1,21 @@
-import { PartialType } from '@nestjs/swagger';
+import { PartialType, ApiProperty } from '@nestjs/swagger';
 import { CreateRatingDto } from './create-rating.dto';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsOptional, IsUUID, IsString, MaxLength } from 'class-validator';
 
 export class UpdateRatingDto extends PartialType(CreateRatingDto) {
-    @ApiProperty({example: '1'})
-      @IsNotEmpty()
-      @IsString()
-      barber_id: string;
-    
-      @ApiProperty({example: '1'})
-      @IsNotEmpty()
-      @IsString()
-      userId: string;
-    
-      @ApiProperty({ example: 'Meniga yoqdi' })
-      @IsNotEmpty()
-      @IsString()
-      @MaxLength(500)
-      comment: string;
+  @ApiProperty({ example: 'uuid-string', required: false })
+  @IsOptional()
+  @IsUUID()
+  barber_id?: string;
+
+  @ApiProperty({ example: 'uuid-string', required: false })
+  @IsOptional()
+  @IsUUID()
+  userId?: string;
+
+  @ApiProperty({ example: 'Meniga yoqdi', required: false })
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  comment?: string;
 }

@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, MaxLength } from 'class-validator';
 
 export class CreateRatingDto {
-  @ApiProperty({example: '1'})
+  @ApiProperty({ example: 'uuid-string' })
   @IsNotEmpty()
-  @IsString()
+  @IsUUID()
   barber_id: string;
 
-  @ApiProperty({example: '1'})
+  @ApiProperty({ example: 'uuid-string' })
   @IsNotEmpty()
-  @IsString()
+  @IsUUID() 
   userId: string;
 
   @ApiProperty({ example: 'Meniga yoqdi' })
