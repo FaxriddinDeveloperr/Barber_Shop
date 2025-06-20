@@ -5,13 +5,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '../dto/update-user.dto';
+import { UserRole } from 'src/common/enum';
+import { BaseEntity } from 'src/common/database/baseEntity';
 
 @Entity('user')
-export class UserEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   full_name: string;
 
@@ -24,12 +22,6 @@ export class UserEntity {
   @Column({ type: 'varchar' })
   password: string;
 
-  @Column({ type: "varchar" ,default: Role.USER})
-  role: Role.ADMIN | Role.USER;
-
-  @CreateDateColumn({ type: 'date' })
-  cretedAt: Date;
-
-  @UpdateDateColumn({ type: 'date' })
-  updatedAt: Date;
+  @Column({ type: 'varchar', default: UserRole.USER })
+  role: UserRole.ADMIN | UserRole.USER | UserRole.SUPPER_ADMIN;
 }

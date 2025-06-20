@@ -7,10 +7,10 @@ import {
 import { CreateBarberShopDto } from './dto/create-barber-shop.dto';
 import { UpdateBarberShopDto } from './dto/update-barber-shop.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BarberShopEntity } from './entities/barber-shop.entity';
+import { BarberShopEntity } from '../../core/entity/barber-shop.entity';
 import { Repository } from 'typeorm';
-import { ErrorHender } from 'src/utils/catchError';
-import { successRes } from 'src/utils/succesResponse';
+import { ErrorHender } from 'src/infrostructure/utils/catchError';
+import { successRes } from 'src/infrostructure/utils/succesResponse';
 import { error } from 'console';
 
 @Injectable()

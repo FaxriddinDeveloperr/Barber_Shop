@@ -4,10 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { BarberModule } from './barber/barber.module';
 import { BookingModule } from './booking/booking.module';
-import { UserEntity } from './user/entities/user.entity';
-import { BookingEntity } from './booking/entities/booking.entity';
+import { UserEntity } from 'src/core/entity/user.entity';
+import { BookingEntity } from '../core/entity/booking.entity';
 import { BarberShopModule } from './barber-shop/barber-shop.module';
-import { BarberShopEntity } from './barber-shop/entities/barber-shop.entity';
+import { BarberShopEntity } from '../core/entity/barber-shop.entity';
 import { ServiceModule } from './service/service.module';
 
 @Module({
@@ -22,7 +22,7 @@ import { ServiceModule } from './service/service.module';
       database: process.env.PG_DB,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [UserEntity, BookingEntity,BarberShopEntity],
+      entities: [__dirname + `/**/*.entity{.ts,.js}`],
     }),
     UserModule,
     BarberModule,

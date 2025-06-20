@@ -7,13 +7,13 @@ import {
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDti } from './dto/register-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from 'src/core/entity/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ErrorHender } from 'src/utils/catchError';
-import { successRes } from 'src/utils/succesResponse';
+import { ErrorHender } from 'src/infrostructure/utils/catchError';
+import { successRes } from 'src/infrostructure/utils/succesResponse';
 
 @Injectable()
 export class UserService {

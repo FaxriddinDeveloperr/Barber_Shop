@@ -1,3 +1,4 @@
+import { BaseEntity } from 'src/common/database/baseEntity';
 import {
   Column,
   CreateDateColumn,
@@ -7,10 +8,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class BarberShopEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class BarberShopEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   name: string;
 
@@ -29,9 +27,5 @@ export class BarberShopEntity {
   @Column({ type: 'varchar' })
   password: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
 
-  @UpdateDateColumn()
-  crretedAt: Date;
 }

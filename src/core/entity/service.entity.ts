@@ -7,13 +7,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BarberShopEntity } from 'src/barber-shop/entities/barber-shop.entity';
+import { BarberShopEntity } from 'src/core/entity/barber-shop.entity';
+import { BaseEntity } from 'src/common/database/baseEntity';
 
 @Entity('services')
-export class ServiceEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class ServiceEntity extends BaseEntity {
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
@@ -29,15 +27,9 @@ export class ServiceEntity {
   @Column()
   barberShop_Id: string;
 
-//   @ManyToOne(() => BarberShopEntity, (barberShop) => barberShop.id, {
-//     onDelete: 'CASCADE',
-//   })
-//   @JoinColumn({ name: 'barberShop_Id' })
-//   barberShop: BarberShopEntity;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  //   @ManyToOne(() => BarberShopEntity, (barberShop) => barberShop.id, {
+  //     onDelete: 'CASCADE',
+  //   })
+  //   @JoinColumn({ name: 'barberShop_Id' })
+  //   barberShop: BarberShopEntity;
 }

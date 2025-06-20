@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BookingEntity } from './entities/booking.entity';
+import { BookingEntity } from '../../core/entity/booking.entity';
 import { Repository } from 'typeorm';
-import { ErrorHender } from 'src/utils/catchError';
-import { successRes } from 'src/utils/succesResponse';
+import { ErrorHender } from 'src/infrostructure/utils/catchError';
+import { successRes } from 'src/infrostructure/utils/succesResponse';
 
 @Injectable()
 export class BookingService {

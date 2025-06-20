@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from './update-user.dto';
+import { UserRole } from 'src/common/enum';
 import {
   IsEmail,
   IsEnum,

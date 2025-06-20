@@ -5,13 +5,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Status } from '../dto/update-booking.dto';
+import { Status } from '../../api/booking/dto/update-booking.dto';
+import { BaseEntity } from 'src/common/database/baseEntity';
 
 @Entity('booking')
-export class BookingEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class BookingEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   user_id: string;
 
@@ -29,10 +27,4 @@ export class BookingEntity {
 
   @Column({ type: 'varchar', default: Status.PENDING })
   status: Status.PENDING | Status.CONCELET | Status.CONFIRMEND;
-
-  @CreateDateColumn({ type: 'date' })
-  cretedAt: Date;
-
-  @UpdateDateColumn({ type: 'date' })
-  updatedAt: Date;
 }
