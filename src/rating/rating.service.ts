@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  HttpException,
+} from '@nestjs/common';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,7 +24,7 @@ export class RatingService {
       await this.repo.save(data);
       return successRes(data, 201);
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      this.handleError(error);
     }
   }
 
@@ -31,7 +36,7 @@ export class RatingService {
       }
       return successRes(data, 200);
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      this.handleError(error);
     }
   }
 
@@ -43,7 +48,7 @@ export class RatingService {
       }
       return successRes(data, 200);
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      this.handleError(error);
     }
   }
 
@@ -53,13 +58,11 @@ export class RatingService {
       if (!data) {
         throw new NotFoundException(`Rating with id: ${id} not found`);
       }
-
       const updatedData = this.repo.merge(data, updateRatingDto);
       await this.repo.save(updatedData);
-
       return successRes(updatedData, 200);
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      this.handleError(error);
     }
   }
 
@@ -69,11 +72,16 @@ export class RatingService {
       if (!data) {
         throw new NotFoundException(`Rating with id: ${id} not found`);
       }
-
       await this.repo.delete(id);
       return successRes({ message: 'Rating deleted successfully' }, 200);
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      this.handleError(error);
     }
+  }
+  private handleError(error: any): never {
+    if (error instanceof HttpException) {
+      throw error;
+    }
+    throw new InternalServerErrorException(error.message);
   }
 }
