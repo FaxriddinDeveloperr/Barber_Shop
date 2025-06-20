@@ -18,4 +18,13 @@ export class CreateBarberShopDto {
   @IsString()
   @IsNotEmpty()
   descripton: string;
+  @ApiProperty({ example: '+99877777777' })
+  @IsString()
+  @IsNotEmpty()
+  phoneNumber: string;
+
+  @ApiProperty({ example: 'qwert12345' })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }

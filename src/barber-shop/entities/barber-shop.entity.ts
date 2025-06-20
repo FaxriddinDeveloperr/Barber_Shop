@@ -23,6 +23,12 @@ export class BarberShopEntity {
   @Column({ type: 'varchar' })
   descripton: string;
 
+  @Column({ type: 'varchar' })
+  phoneNumber: string;
+
+  @Column({ type: 'varchar' })
+  password: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -1,5 +1,4 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { CreateBarberShopDto } from './create-barber-shop.dto';
 import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateBarberShopDto {

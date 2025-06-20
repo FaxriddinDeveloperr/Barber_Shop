@@ -37,7 +37,8 @@ export class BarberShopService {
 
   async findAll() {
     try {
-      return await this.barberRepo.find();
+      const data = await this.barberRepo.find();
+      return successRes(data);
     } catch (error) {
       return ErrorHender(error);
     }
