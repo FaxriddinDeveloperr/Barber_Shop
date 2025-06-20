@@ -22,17 +22,6 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   password: string;
 
-<<<<<<< HEAD:src/user/entities/user.entity.ts
-  @Column({ type: "varchar" ,default: Role.USER})
-  role: Role.ADMIN | Role.USER | Role.SUPPER_ADMIN;
-
-  @CreateDateColumn({ type: 'date' })
-  cretedAt: Date;
-
-  @UpdateDateColumn({ type: 'date' })
-  updatedAt: Date;
-=======
   @Column({ type: 'varchar', default: UserRole.USER })
   role: UserRole.ADMIN | UserRole.USER | UserRole.SUPPER_ADMIN;
->>>>>>> main:src/core/entity/user.entity.ts
 }

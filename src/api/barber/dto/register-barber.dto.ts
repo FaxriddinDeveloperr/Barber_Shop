@@ -1,23 +1,37 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
   IsString,
   Length,
 } from 'class-validator';
 
-export class UpdateBarberDto {
+export class RegisterBarberDto {
   @ApiProperty({ description: 'full name', example: 'Usmonqulov Abduhamid' })
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   full_name: string;
 
   @ApiProperty({ description: 'phone number', example: '+998930451852' })
   @IsString()
   @IsPhoneNumber('UZ')
-  @IsOptional()
+  @IsNotEmpty()
   phone_number: string;
+
+  @ApiProperty({ description: 'password', example: '1234User#' })
+  @IsString()
+  @IsNotEmpty()
+  @Length(5, 15, {
+    message: `Parol uzunligi 5 dan 15 belgigacha bo'lishi kerak`,
+  })
+  password: string;
+
+  @ApiProperty({ description: 'Email', example: 'karalevstvabitva@gmail.com' })
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 
   @ApiProperty({
     description: 'bio',
@@ -26,7 +40,7 @@ export class UpdateBarberDto {
   })
   @IsString()
   @Length(8, 300, { message: "bio uzunligi 8 dan 300 gacha bo'lishi kerak" })
-  @IsOptional()
+  @IsNotEmpty()
   bio: string;
 
   @ApiProperty({ description: 'image link' })
@@ -34,8 +48,8 @@ export class UpdateBarberDto {
   @IsString()
   img: string;
 
-  @ApiProperty({ description: 'is avaylbl', example: 'true' })
-  @IsBoolean()
-  @IsOptional()
-  is_avaylbl: boolean;
+  @ApiProperty({ example: 'barberShop_id' })
+  @IsString()
+  @IsNotEmpty()
+  barberShop_id: string;
 }

@@ -3,3 +3,8 @@ export enum UserRole {
   USER = 'user',
   SUPPER_ADMIN = 'supperadmin',
 }
+
+export enum BarberRole {
+  BARBER_SHOP = "barber_shop",
+  BARBER = "barber"
+}

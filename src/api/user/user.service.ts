@@ -9,17 +9,18 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/core/entity/user.entity';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ErrorHender } from 'src/infrostructure/utils/catchError';
 import { successRes } from 'src/infrostructure/utils/succesResponse';
+import { BcryptEncryption } from 'src/infrostructure/bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity) private readonly User: Repository<UserEntity>,
     private readonly jwtSerwis: JwtService,
+    private readonly Bcrypt :BcryptEncryption,
   ) {}
 
   async register(registerUserDti: RegisterUserDto) {
@@ -30,7 +31,7 @@ export class UserService {
       if (data) {
         throw new ConflictException('Email olredy exists');
       }
-      const hashPass = bcrypt.hashSync(registerUserDti.password, 10);
+      const hashPass = await this.Bcrypt.Generate(registerUserDti.password);
 
       let user = {
         ...registerUserDti,
@@ -52,7 +53,7 @@ export class UserService {
       if (!data) {
         throw new ForbiddenException('Wrong email');
       }
-      if (!bcrypt.compareSync(loginUserDto.password, data.password)) {
+      if (!await this.Bcrypt.Verify(loginUserDto.password, data.password)) {
         throw new ForbiddenException('Wrong password');
       }
       const acsesToken = this.AcsesToken({ id: data.id, role: data.role });
@@ -125,10 +126,6 @@ export class UserService {
     }
   }
 
-<<<<<<< HEAD:src/user/user.service.ts
-=======
-  
->>>>>>> main:src/api/user/user.service.ts
   AcsesToken(pelod: { id: string; role: string }) {
     return this.jwtSerwis.sign(pelod, {
       secret: String(process.env.ACSES_SECRET),

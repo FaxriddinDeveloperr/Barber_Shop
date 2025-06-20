@@ -20,13 +20,3 @@ export class UpdateUserDto {
     
 }
 
-
-
-<<<<<<< HEAD:src/user/dto/update-user.dto.ts
-export enum Role  {
-    SUPPER_ADMIN = "supper_admin",
-    ADMIN = "admin",
-    USER = "user",
-}
-=======
->>>>>>> main:src/api/user/dto/update-user.dto.ts
