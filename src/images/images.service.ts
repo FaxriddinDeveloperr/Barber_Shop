@@ -3,6 +3,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   HttpException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
@@ -10,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntity } from './entities/image.entity';
 import { Repository } from 'typeorm';
 import { successRes } from 'src/utils/succesResponse';
+import { validate as isUUID } from 'uuid';
 
 @Injectable()
 export class ImagesService {
@@ -42,6 +44,7 @@ export class ImagesService {
 
   async findOne(id: string) {
     try {
+      this.validateId(id);
       const data = await this.repo.findOne({ where: { id } });
       if (!data) {
         throw new NotFoundException(`Image with id: ${id} not found`);
@@ -54,6 +57,7 @@ export class ImagesService {
 
   async update(id: string, updateImageDto: UpdateImageDto) {
     try {
+      this.validateId(id);
       const data = await this.repo.findOne({ where: { id } });
       if (!data) {
         throw new NotFoundException(`Image with id: ${id} not found`);
@@ -68,6 +72,7 @@ export class ImagesService {
 
   async remove(id: string) {
     try {
+      this.validateId(id);
       const data = await this.repo.findOne({ where: { id } });
       if (!data) {
         throw new NotFoundException(`Image with id: ${id} not found`);
@@ -87,5 +92,11 @@ export class ImagesService {
       throw error;
     }
     throw new InternalServerErrorException(error.message);
+  }
+
+  private validateId(id: string): void {
+    if (!isUUID(id)) {
+      throw new BadRequestException(`Invalid UUID format for id: ${id}`);
+    }
   }
 }
