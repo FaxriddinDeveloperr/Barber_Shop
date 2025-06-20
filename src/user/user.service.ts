@@ -28,7 +28,7 @@ export class UserService {
         where: { email: registerUserDti.email },
       });
       if (data) {
-        throw new ConflictException('Email alredy exists');
+        throw new ConflictException('Email olredy exists');
       }
       const hashPass = bcrypt.hashSync(registerUserDti.password, 10);
 
@@ -55,11 +55,11 @@ export class UserService {
       if (!bcrypt.compareSync(loginUserDto.password, data.password)) {
         throw new ForbiddenException('Wrong password');
       }
-      const acsesToken = this.AcsesToken({ id: data.id, email: data.email });
+      const acsesToken = this.AcsesToken({ id: data.id, role: data.role });
 
       const refreshToken = this.RefreshToken({
         id: data.id,
-        email: data.email,
+        role: data.role,
       });
       return { acsesToken, refreshToken };
     } catch (error) {
@@ -121,17 +121,17 @@ export class UserService {
       let delet = await this.User.remove(data);
       return successRes(delet)
     } catch (error) {
-      ErrorHender(error);
+      return ErrorHender(error);
     }
   }
 
-  AcsesToken(pelod: { id: string; email: string }) {
+  AcsesToken(pelod: { id: string; role: string }) {
     return this.jwtSerwis.sign(pelod, {
       secret: String(process.env.ACSES_SECRET),
       expiresIn: '1d',
     });
   }
-  RefreshToken(pelod: { id: string; email: string }) {
+  RefreshToken(pelod: { id: string; role: string }) {
     return this.jwtSerwis.sign(pelod, {
       secret: String(process.env.REFRESG_SEKRET),
       expiresIn: '7d',

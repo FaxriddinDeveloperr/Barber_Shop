@@ -12,7 +12,7 @@ export class UpdateUserDto {
       @IsNotEmpty()
       phone_number: string;
     
-      @ApiProperty({ example: 'usmonqulovabduhamid00@gmail.com' })
+      @ApiProperty({ example: 'karalevstvabitva@gmail.com' })
       @IsString()
       @IsNotEmpty()
       @IsEmail()
@@ -23,6 +23,7 @@ export class UpdateUserDto {
 
 
 export enum Role  {
+    SUPPER_ADMIN = "supper_admin",
     ADMIN = "admin",
     USER = "user",
 }

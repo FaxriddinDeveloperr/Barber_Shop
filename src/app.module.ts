@@ -8,6 +8,8 @@ import { UserEntity } from './user/entities/user.entity';
 import { BookingEntity } from './booking/entities/booking.entity';
 import { BarberShopModule } from './barber-shop/barber-shop.module';
 import { BarberShopEntity } from './barber-shop/entities/barber-shop.entity';
+import { AdminModule } from './admin/admin.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { BarberShopEntity } from './barber-shop/entities/barber-shop.entity';
     BarberModule,
     BookingModule,
     BarberShopModule,
+    AdminModule,
+    MailModule,
   ],
 })
 export class AppModule {}

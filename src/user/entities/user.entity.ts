@@ -25,7 +25,7 @@ export class UserEntity {
   password: string;
 
   @Column({ type: "varchar" ,default: Role.USER})
-  role: Role.ADMIN | Role.USER;
+  role: Role.ADMIN | Role.USER | Role.SUPPER_ADMIN;
 
   @CreateDateColumn({ type: 'date' })
   cretedAt: Date;
