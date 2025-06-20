@@ -5,14 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RatingEntity } from './entities/rating.entity';
 import { successRes } from 'src/utils/succesResponse';
-import { ErrorHender } from 'src/utils/catchError';
 
 @Injectable()
 export class RatingService {
-
   constructor(
-    @InjectRepository(RatingEntity) private repo: Repository<RatingEntity>
-  ) { }
+    @InjectRepository(RatingEntity)
+    private repo: Repository<RatingEntity>,
+  ) {}
 
   async create(createRatingDto: CreateRatingDto) {
     try {
@@ -20,7 +19,7 @@ export class RatingService {
       await this.repo.save(data);
       return successRes(data, 201);
     } catch (error) {
-      return ErrorHender(error.message);
+      throw new InternalServerErrorException(error.message);
     }
   }
 
@@ -30,48 +29,51 @@ export class RatingService {
       if (!data.length) {
         throw new NotFoundException('Ratings not found');
       }
-      return successRes(data, 200)
-    } catch (error) {
-      return ErrorHender(error.message);
-    }
-  }
-
-  async findOne(id: number) {
-    try {
-      const data = await this.repo.findOne({ where: { id } })
-      if(!data) {
-        return ErrorHender(`Rating with id: ${id} not found`);
-      }
       return successRes(data, 200);
     } catch (error) {
-      return ErrorHender(error.message);
+      throw new InternalServerErrorException(error.message);
     }
   }
 
-  async update(id: number, updateRatingDto: UpdateRatingDto) {
-    try {
-      const data = await this.repo.findOne({ where: {id} });
-      if(!data) {
-        return ErrorHender(`Rating with id: ${id} not found`);
-      }
-      await this.repo.update(id, updateRatingDto);
-      const updatedData = await this.repo.findOne({ where: { id } });
-      return successRes(updatedData, 200);
-    } catch (error) {
-      return ErrorHender(error.message);
-    }
-  }
-
-  async remove(id: number) {
+  async findOne(id: string) {
     try {
       const data = await this.repo.findOne({ where: { id } });
       if (!data) {
-        return ErrorHender(`Rating with id: ${id} not found`);
+        throw new NotFoundException(`Rating with id: ${id} not found`);
       }
+      return successRes(data, 200);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  async update(id: string, updateRatingDto: UpdateRatingDto) {
+    try {
+      const data = await this.repo.findOne({ where: { id } });
+      if (!data) {
+        throw new NotFoundException(`Rating with id: ${id} not found`);
+      }
+
+      const updatedData = this.repo.merge(data, updateRatingDto);
+      await this.repo.save(updatedData);
+
+      return successRes(updatedData, 200);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  async remove(id: string) {
+    try {
+      const data = await this.repo.findOne({ where: { id } });
+      if (!data) {
+        throw new NotFoundException(`Rating with id: ${id} not found`);
+      }
+
       await this.repo.delete(id);
       return successRes({ message: 'Rating deleted successfully' }, 200);
     } catch (error) {
-      return ErrorHender(error.message);  
+      throw new InternalServerErrorException(error.message);
     }
   }
 }
