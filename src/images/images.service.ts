@@ -1,7 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  HttpException,
+} from '@nestjs/common';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
-import { ErrorHender } from 'src/utils/catchError';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntity } from './entities/image.entity';
 import { Repository } from 'typeorm';
@@ -9,18 +13,18 @@ import { successRes } from 'src/utils/succesResponse';
 
 @Injectable()
 export class ImagesService {
-
   constructor(
-    @InjectRepository(ImageEntity) private repo: Repository<ImageEntity>
-  ) { }
+    @InjectRepository(ImageEntity)
+    private repo: Repository<ImageEntity>,
+  ) {}
 
   async create(createImageDto: CreateImageDto) {
     try {
       const data = this.repo.create(createImageDto);
       await this.repo.save(data);
-      return successRes(data, 500)
+      return successRes(data, 201);
     } catch (error) {
-      return ErrorHender(error.message)
+      this.handleError(error);
     }
   }
 
@@ -28,11 +32,11 @@ export class ImagesService {
     try {
       const data = await this.repo.find();
       if (!data.length) {
-        return ErrorHender('Images not found');
+        throw new NotFoundException('Images not found');
       }
       return successRes(data, 200);
     } catch (error) {
-      return ErrorHender(error.message);
+      this.handleError(error);
     }
   }
 
@@ -40,11 +44,11 @@ export class ImagesService {
     try {
       const data = await this.repo.findOne({ where: { id } });
       if (!data) {
-        return ErrorHender(`Image with id: ${id} not found`);
+        throw new NotFoundException(`Image with id: ${id} not found`);
       }
       return successRes(data, 200);
     } catch (error) {
-      return ErrorHender(error.message);
+      this.handleError(error);
     }
   }
 
@@ -52,22 +56,36 @@ export class ImagesService {
     try {
       const data = await this.repo.findOne({ where: { id } });
       if (!data) {
-        return ErrorHender(`Image with id: ${id} not found`);
+        throw new NotFoundException(`Image with id: ${id} not found`);
       }
-      await this.repo.update(id, updateImageDto);
-      const updatedData = this.repo.findOne({ where: { id } });
+      const updatedData = this.repo.merge(data, updateImageDto);
+      await this.repo.save(updatedData);
       return successRes(updatedData, 200);
     } catch (error) {
-      return ErrorHender(error.message);
+      this.handleError(error);
     }
   }
 
   async remove(id: string) {
-    const data = await this.repo.findOne({ where: { id } });
-    if(!data) {
-      return ErrorHender(`Image with id: ${id} not found`);
+    try {
+      const data = await this.repo.findOne({ where: { id } });
+      if (!data) {
+        throw new NotFoundException(`Image with id: ${id} not found`);
+      }
+      await this.repo.delete(id);
+      return successRes(
+        { message: `Image with id: ${id} successfully deleted` },
+        200,
+      );
+    } catch (error) {
+      this.handleError(error);
     }
-    await this.repo.delete(id);
-    return successRes({ message: `Image with id: ${id} successfuly deleted`}, 200);
+  }
+
+  private handleError(error: any): never {
+    if (error instanceof HttpException) {
+      throw error;
+    }
+    throw new InternalServerErrorException(error.message);
   }
 }
