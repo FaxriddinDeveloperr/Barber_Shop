@@ -5,6 +5,7 @@ import { ErrorHender } from 'src/utils/catchError';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntity } from './entities/image.entity';
 import { Repository } from 'typeorm';
+import { successRes } from 'src/utils/succesResponse';
 
 @Injectable()
 export class ImagesService {
@@ -15,26 +16,58 @@ export class ImagesService {
 
   async create(createImageDto: CreateImageDto) {
     try {
-      const data = this.repo.create()
+      const data = this.repo.create(createImageDto);
       await this.repo.save(data);
+      return successRes(data, 500)
     } catch (error) {
       return ErrorHender(error.message)
     }
   }
 
-  findAll() {
-    return `This action returns all images`;
+  async findAll() {
+    try {
+      const data = await this.repo.find();
+      if (!data.length) {
+        return ErrorHender('Images not found');
+      }
+      return successRes(data, 200);
+    } catch (error) {
+      return ErrorHender(error.message);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} image`;
+  async findOne(id: string) {
+    try {
+      const data = await this.repo.findOne({ where: { id } });
+      if (!data) {
+        return ErrorHender(`Image with id: ${id} not found`);
+      }
+      return successRes(data, 200);
+    } catch (error) {
+      return ErrorHender(error.message);
+    }
   }
 
-  update(id: number, updateImageDto: UpdateImageDto) {
-    return `This action updates a #${id} image`;
+  async update(id: string, updateImageDto: UpdateImageDto) {
+    try {
+      const data = await this.repo.findOne({ where: { id } });
+      if (!data) {
+        return ErrorHender(`Image with id: ${id} not found`);
+      }
+      await this.repo.update(id, updateImageDto);
+      const updatedData = this.repo.findOne({ where: { id } });
+      return successRes(updatedData, 200);
+    } catch (error) {
+      return ErrorHender(error.message);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} image`;
+  async remove(id: string) {
+    const data = await this.repo.findOne({ where: { id } });
+    if(!data) {
+      return ErrorHender(`Image with id: ${id} not found`);
+    }
+    await this.repo.delete(id);
+    return successRes({ message: `Image with id: ${id} successfuly deleted`}, 200);
   }
 }

@@ -19,16 +19,16 @@ export class ImagesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.imagesService.findOne(+id);
+    return this.imagesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateImageDto: UpdateImageDto) {
-    return this.imagesService.update(+id, updateImageDto);
+    return this.imagesService.update(id, updateImageDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.imagesService.remove(+id);
+    return this.imagesService.remove(id);
   }
 }
