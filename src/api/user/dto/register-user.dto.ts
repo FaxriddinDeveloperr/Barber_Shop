@@ -9,7 +9,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class RegisterUserDti {
+export class RegisterUserDto {
   @ApiProperty({ example: 'Usmonqulov Abduhamid' })
   @IsString()
   @IsNotEmpty()

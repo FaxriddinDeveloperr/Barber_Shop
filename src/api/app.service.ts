@@ -4,6 +4,7 @@ import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AllExceptionsFilter } from 'src/infrostructure/exceoption/all.Error.filter';
 
+const Port = Number( process.env.PORT) || 3000;
 export default class Application {
   public static async main(): Promise<void> {
     let app = await NestFactory.create(AppModule);
@@ -32,6 +33,8 @@ export default class Application {
     const documentFactory = () =>
       SwaggerModule.createDocument(app, config_swwager);
     SwaggerModule.setup(api, app, documentFactory);
-    await app.listen(3000, () => console.log(`server running on port `));
+    await app.listen(Port, () => {
+      console.log(`server running on port ${Port}`);
+    });
   }
 }

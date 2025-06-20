@@ -4,11 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { BarberModule } from './barber/barber.module';
 import { BookingModule } from './booking/booking.module';
-import { UserEntity } from 'src/core/entity/user.entity';
-import { BookingEntity } from '../core/entity/booking.entity';
 import { BarberShopModule } from './barber-shop/barber-shop.module';
-import { BarberShopEntity } from '../core/entity/barber-shop.entity';
 import { ServiceModule } from './service/service.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -29,6 +27,7 @@ import { ServiceModule } from './service/service.module';
     BookingModule,
     BarberShopModule,
     ServiceModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

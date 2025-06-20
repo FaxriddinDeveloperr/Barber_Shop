@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
-import { RegisterUserDti } from './dto/register-user.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/core/entity/user.entity';
 import { Repository } from 'typeorm';
@@ -22,7 +22,7 @@ export class UserService {
     private readonly jwtSerwis: JwtService,
   ) {}
 
-  async register(registerUserDti: RegisterUserDti) {
+  async register(registerUserDti: RegisterUserDto) {
     try {
       const data = await this.User.findOne({
         where: { email: registerUserDti.email },
@@ -55,11 +55,11 @@ export class UserService {
       if (!bcrypt.compareSync(loginUserDto.password, data.password)) {
         throw new ForbiddenException('Wrong password');
       }
-      const acsesToken = this.AcsesToken({ id: data.id, email: data.email });
+      const acsesToken = this.AcsesToken({ id: data.id, role: data.role });
 
       const refreshToken = this.RefreshToken({
         id: data.id,
-        email: data.email,
+        role: data.role,
       });
       return { acsesToken, refreshToken };
     } catch (error) {
@@ -125,13 +125,14 @@ export class UserService {
     }
   }
 
-  AcsesToken(pelod: { id: string; email: string }) {
+  
+  AcsesToken(pelod: { id: string; role: string }) {
     return this.jwtSerwis.sign(pelod, {
       secret: String(process.env.ACSES_SECRET),
       expiresIn: '1d',
     });
   }
-  RefreshToken(pelod: { id: string; email: string }) {
+  RefreshToken(pelod: { id: string; role: string }) {
     return this.jwtSerwis.sign(pelod, {
       secret: String(process.env.REFRESG_SEKRET),
       expiresIn: '7d',
