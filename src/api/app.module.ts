@@ -7,6 +7,7 @@ import { BookingModule } from './booking/booking.module';
 import { BarberShopModule } from './barber-shop/barber-shop.module';
 import { ServiceModule } from './service/service.module';
 import { AdminModule } from './admin/admin.module';
+import { MailModule } from 'src/common/mail/mail.module';
 
 @Module({
   imports: [
@@ -26,8 +27,9 @@ import { AdminModule } from './admin/admin.module';
     BarberModule,
     BookingModule,
     BarberShopModule,
-    ServiceModule,
     AdminModule,
+    MailModule,
+    ServiceModule
   ],
 })
 export class AppModule {}

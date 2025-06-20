@@ -20,7 +20,7 @@ export class RegisterUserDto {
   @IsNotEmpty()
   phone_number: string;
 
-  @ApiProperty({ example: 'usmonqulovabduhamid00@gmail.com' })
+  @ApiProperty({ example: 'karalevstvabitva@gmail.com' })
   @IsString()
   @IsNotEmpty()
   @IsEmail()
@@ -32,5 +32,4 @@ export class RegisterUserDto {
   @MaxLength(15)
   @MinLength(5)
   password: string;
-
 }

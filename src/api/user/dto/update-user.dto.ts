@@ -12,13 +12,11 @@ export class UpdateUserDto {
       @IsNotEmpty()
       phone_number: string;
     
-      @ApiProperty({ example: 'usmonqulovabduhamid00@gmail.com' })
+      @ApiProperty({ example: 'karalevstvabitva@gmail.com' })
       @IsString()
       @IsNotEmpty()
       @IsEmail()
       email: string;
     
 }
-
-
 
