@@ -23,7 +23,7 @@ import { MailModule } from './mail/mail.module';
       database: process.env.PG_DB,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [UserEntity, BookingEntity,BarberShopEntity],
+      entities: [__dirname + `/**/*.entity{.ts,.js}`],
     }),
     UserModule,
     BarberModule,
