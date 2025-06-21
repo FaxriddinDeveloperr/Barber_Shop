@@ -8,3 +8,9 @@ export enum BarberRole {
   BARBER_SHOP = "barber_shop",
   BARBER = "barber"
 }
+
+export enum Role {
+  ADMIN = 'admin',
+  BARBER = 'barber',
+  USER = 'user',
+}

@@ -8,6 +8,7 @@ import { BarberShopModule } from './barber-shop/barber-shop.module';
 import { ServiceModule } from './service/service.module';
 import { AdminModule } from './admin/admin.module';
 import { MailModule } from 'src/common/mail/mail.module';
+import { BarberScheduleModule } from './barber-schedule/barber-schedule.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { MailModule } from 'src/common/mail/mail.module';
     BarberShopModule,
     AdminModule,
     MailModule,
-    ServiceModule
+    ServiceModule,
+    BarberScheduleModule
   ],
 })
 export class AppModule {}
